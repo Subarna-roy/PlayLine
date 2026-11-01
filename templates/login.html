@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block public_content %}
+<div class="auth-page"><a class="brand" href="/"><span class="brand-mark">P</span><span>playline<span class="brand-dot">.</span></span></a><div class="auth-card"><div class="eyebrow">WELCOME BACK</div><h1>Good to see you.</h1><p class="muted">Log in and pick up where you left off.</p><form method="post"><label>Username or email</label><input name="identity" required placeholder="Enter your username or email"><label>Password</label><input type="password" name="password" required placeholder="Enter your password"><button class="button button-glow full-width" type="submit">Log in <span>→</span></button></form><p class="auth-switch">New to Playline? <a href="{{ url_for('register') }}">Create an account</a></p></div></div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard{% endblock %}
+{% block crumb %}LEADERBOARD{% endblock %}
+{% block content %}
+<section class="page-heading"><div><div class="eyebrow">THE HIGH-SCORE CLUB</div><h1>Leaderboard <span class="tiny-spark">✦</span></h1><p class="muted">The players stacking up the most points.</p></div></section>
+<div class="panel leaderboard-panel"><div class="leaderboard-head"><span>RANK / PLAYER</span><span>GAMES PLAYED</span><span>TOTAL POINTS</span></div>{% for row in rows %}<div class="leaderboard-row"><div class="rank-user"><span class="rank rank-{{ loop.index }}">{{ '%02d'|format(loop.index) }}</span><span class="avatar">{{ row.username[0]|upper }}</span><strong>{{ row.username }}</strong>{% if row.username == current_user.username %}<em>YOU</em>{% endif %}</div><span>{{ row.plays }}</span><strong class="points">{{ row.points }} pts</strong></div>{% else %}<div class="empty-state"><span>♛</span><p>No scores yet. Be the first on the board!</p><a href="{{ url_for('game_library') }}">Start playing →</a></div>{% endfor %}</div>
+{% endblock %}

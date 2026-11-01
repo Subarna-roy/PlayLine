@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Play beyond limits{% endblock %}
+{% block public_content %}
+<div class="landing">
+  <nav class="landing-nav"><a class="brand" href="/"><span class="brand-mark">P</span><span>playline<span class="brand-dot">.</span></span></a><div><a href="{{ url_for('login') }}" class="nav-login">Log in</a><a href="{{ url_for('register') }}" class="button button-glow">Get started <span>↗</span></a></div></nav>
+  <section class="hero">
+    <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> THE ARCADE, REIMAGINED</div><h1>Play more.<br><span>Worry less.</span></h1><p>One hub. Six games. Endless chances to beat your best. Jump into the neon-powered world of Playline.</p><div class="hero-actions"><a class="button button-glow" href="{{ url_for('register') }}">Start playing <span>→</span></a><a class="text-link" href="{{ url_for('login') }}">I have an account</a></div><div class="hero-stats"><div><strong>06</strong><small>GAMES TO PLAY</small></div><div><strong>∞</strong><small>WAYS TO HAVE FUN</small></div><div><strong>01</strong><small>PLACE TO PLAY</small></div></div></div>
+    <div class="hero-art"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="hero-core"><span class="core-symbol">✦</span><span class="core-text">GAME<br>ON</span></div><div class="float-card float-one"><span>✕</span><small>TIC TAC TOE</small></div><div class="float-card float-two"><span>2048</span><small>PUZZLE MODE</small></div><div class="float-card float-three"><span>🐍</span><small>ARCADE RUN</small></div><div class="spark spark-one">✧</div><div class="spark spark-two">✦</div></div>
+  </section>
+  <section class="landing-bottom"><span>BUILT FOR THE LOVE OF PLAY</span><span>DISCOVER · PLAY · IMPROVE</span></section>
+</div>
+{% endblock %}

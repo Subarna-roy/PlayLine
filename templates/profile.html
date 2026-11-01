@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}My profile{% endblock %}
+{% block crumb %}MY PROFILE{% endblock %}
+{% block content %}
+<section class="page-heading"><div><div class="eyebrow">PLAYER CARD</div><h1>My profile <span class="tiny-spark">✦</span></h1><p class="muted">Your Playline account at a glance.</p></div></section>
+<div class="profile-layout"><div class="panel profile-card"><div class="profile-avatar">{{ user.username[0]|upper }}</div><h2>{{ user.username }}</h2><p class="muted">{{ user.email }}</p><span class="member-tag">✦ PLAYLINE PLAYER</span><div class="profile-date">Member since {{ user.created_at[:10] }}</div></div><div class="profile-stats"><div class="stat-card"><div class="stat-icon violet">▣</div><span class="stat-label">TOTAL PLAYS</span><strong>{{ stats.plays }}</strong></div><div class="stat-card"><div class="stat-icon cyan">✧</div><span class="stat-label">TOTAL POINTS</span><strong>{{ stats.points }}</strong></div><div class="panel profile-note"><h3>Keep the streak alive.</h3><p>Every game is a chance to improve your score. Pick a challenge and get back in the game.</p><a href="{{ url_for('game_library') }}" class="button button-glow">Find a game →</a></div></div></div>
+{% endblock %}

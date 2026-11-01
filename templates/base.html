@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Playline{% endblock %} | Playline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  {% if current_user %}
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">P</span><span>playline<span class="brand-dot">.</span></span></a>
+      <div class="side-label">MENU</div>
+      <nav class="side-nav">
+        <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' else '' }}"><span>⌂</span> Dashboard</a>
+        <a href="{{ url_for('game_library') }}" class="{{ 'active' if request.endpoint in ['game_library','play'] else '' }}"><span>▣</span> Explore Games</a>
+        <a href="{{ url_for('leaderboard') }}" class="{{ 'active' if request.endpoint == 'leaderboard' else '' }}"><span>♛</span> Leaderboard</a>
+        <a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint == 'profile' else '' }}"><span>◉</span> My Profile</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="upgrade-card"><div class="upgrade-icon">✦</div><h3>Level up your play</h3><p>Keep playing and beat your best score.</p><a href="{{ url_for('game_library') }}" class="button button-small button-glow">Explore games</a></div>
+        <a class="logout-link" href="{{ url_for('logout') }}">↪ <span>Log out</span></a>
+      </div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb">PLAYLINE <span>/</span> {% block crumb %}DASHBOARD{% endblock %}</div>
+        <div class="top-user"><span class="online-dot"></span><span class="avatar">{{ current_user.username[0]|upper }}</span><span>{{ current_user.username }}</span></div>
+      </header>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      <footer class="footer">PLAYLINE <span>·</span> YOUR NEXT GAME STARTS HERE</footer>
+    </main>
+  </div>
+  {% else %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<div class="public-flashes">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    {% block public_content %}{% endblock %}
+  {% endif %}
+  {% block scripts %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/games.js') }}"></script>
+</body>
+</html>

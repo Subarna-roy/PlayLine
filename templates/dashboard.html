@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block crumb %}DASHBOARD{% endblock %}
+{% block content %}
+<section class="welcome-row"><div><div class="eyebrow">YOUR ARCADE IS READY</div><h1>Hey, {{ current_user.username }} <span class="wave">✦</span></h1><p class="muted">What are we playing today?</p></div><a class="button button-glow" href="{{ url_for('game_library') }}">Browse all games <span>→</span></a></section>
+<section class="stats-grid">
+  <div class="stat-card"><div class="stat-icon violet">▣</div><span class="stat-label">TOTAL PLAYS</span><strong>{{ stats.plays }}</strong><small>Games completed</small></div>
+  <div class="stat-card"><div class="stat-icon cyan">✧</div><span class="stat-label">TOTAL POINTS</span><strong>{{ stats.points }}</strong><small>Points collected</small></div>
+  <div class="stat-card"><div class="stat-icon pink">◈</div><span class="stat-label">GAMES EXPLORED</span><strong>{{ stats.games_played }}<i>/6</i></strong><small>Different games played</small></div>
+</section>
+<section class="section-head"><div><div class="eyebrow">PICK YOUR NEXT CHALLENGE</div><h2>Featured games <span class="tiny-spark">✦</span></h2></div><a class="view-all" href="{{ url_for('game_library') }}">View all games ↗</a></section>
+<div class="game-grid dashboard-games">
+{% for game in games[:3] %}
+  <article class="game-card {{ game.color }}"><a class="game-art art-{{ game.slug }}" href="{{ url_for('play', slug=game.slug) }}"><span class="art-glow"></span><span class="game-symbol">{{ game.icon }}</span><span class="art-label">{{ game.category|upper }} / {{ game.difficulty|upper }}</span><span class="play-circle">▶</span></a><div class="game-info"><div><h3>{{ game.name }}</h3><p>{{ game.description }}</p></div><button class="fav-button" data-favorite="{{ game.slug }}" aria-label="Toggle favorite">{{ '♥' if game.slug in favorites else '♡' }}</button></div></article>
+{% endfor %}
+</div>
+<section class="bottom-grid"><div class="panel recent-panel"><div class="section-head compact"><div><div class="eyebrow">YOUR ACTIVITY</div><h2>Recent plays</h2></div><a class="view-all" href="{{ url_for('game_library') }}">Play more ↗</a></div>{% if recent %}<div class="activity-list">{% for item in recent %}<div class="activity-row"><span class="activity-dot"></span><div><strong>{{ item.game_slug|replace('-', ' ')|title }}</strong><small>{{ item.played_at }}</small></div><b>+{{ item.score }} pts</b></div>{% endfor %}</div>{% else %}<div class="empty-state"><span>✧</span><p>Your game history will appear here.</p><a href="{{ url_for('game_library') }}">Play your first game →</a></div>{% endif %}</div><div class="promo-panel"><div class="promo-orb">✦</div><div class="eyebrow">A LITTLE FRIENDLY COMPETITION</div><h2>Can you make<br>the top 10?</h2><p>Play games, earn points and see where you rank.</p><a class="button button-outline" href="{{ url_for('leaderboard') }}">View leaderboard →</a></div></section>
+{% endblock %}

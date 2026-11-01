@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ game.name }} · Playline{% endblock %}
+{% block crumb %}<a href="{{ url_for('game_library') }}">GAMES</a> / {{ game.name|upper }}{% endblock %}
+{% block content %}
+<div class="play-heading"><div><a class="back-link" href="{{ url_for('game_library') }}">← Back to games</a><div class="eyebrow">{{ game.category|upper }} GAME</div><h1>{{ game.name }}</h1><p class="muted">{{ game.description }}</p></div><div class="game-pill">PLAY YOUR WAY</div></div>
+<section class="playline-setup">
+  <div class="setup-label">01 <span>CHOOSE DIFFICULTY</span></div>
+  <div class="choice-row" id="difficulty-options">
+    <button type="button" class="setup-choice active" data-difficulty="easy"><strong>Easy</strong><small>Relaxed play</small></button>
+    <button type="button" class="setup-choice" data-difficulty="medium"><strong>Medium</strong><small>Balanced</small></button>
+    <button type="button" class="setup-choice" data-difficulty="hard"><strong>Hard</strong><small>Expert challenge</small></button>
+  </div>
+  <div class="setup-label setup-second">02 <span>CHOOSE OPPONENT</span></div>
+  <div class="choice-row mode-row" id="mode-options">
+    <button type="button" class="setup-choice active" data-mode="ai"><strong>🤖 Play with AI</strong><small>Challenge the computer</small></button>
+    <button type="button" class="setup-choice" data-mode="friends"><strong>👥 Play with Friends</strong><small>Two players · same device</small></button>
+  </div>
+  <div class="friend-names" id="friend-names" hidden>
+    <label>Player 1<input id="player-one-name" maxlength="16" value="{{ current_user.username }}" placeholder="Player 1"></label>
+    <label>Player 2<input id="player-two-name" maxlength="16" value="Friend" placeholder="Friend"></label>
+  </div>
+  <div class="setup-footer"><div><b class="points-star">✦</b><span><strong>Playline Points</strong><small>Earn points in every game. Harder levels reward more.</small></span></div><button type="button" class="button button-glow" id="start-game">Start Game →</button></div>
+</section>
+<div class="game-stage" id="game-stage" data-game="{{ game.slug }}">
+  <div class="game-toolbar"><span class="live-tag"><i></i> GAME SESSION</span><span id="game-status">Choose settings and start</span><button class="reset-button" id="reset-game" type="button">↻ Restart</button></div>
+  <div class="game-meta"><span id="session-label">Easy · Play with AI</span><span>POINTS <strong id="earned-points">0</strong></span></div>
+  {% if game.slug == 'tic-tac-toe' %}
+  <div class="game-content"><div class="game-instruction">Get three in a row to win.</div><div class="duel-score"><div><small id="ttt-name-x">YOU</small><strong id="ttt-score-x">0</strong></div><span>VS</span><div><small id="ttt-name-o">AI</small><strong id="ttt-score-o">0</strong></div></div><div class="ttt-board" id="ttt-board">{% for i in range(9) %}<button class="ttt-cell" data-cell="{{ i }}" aria-label="Cell {{ i+1 }}"></button>{% endfor %}</div><div class="game-result" id="game-result">Press Start Game to begin</div></div>
+  {% elif game.slug == 'snake' %}
+  <div class="game-content"><div class="game-instruction">Collect glowing food and avoid the walls and your tail.</div><canvas id="snake-canvas" width="480" height="360"></canvas><div class="snake-score-line">RUN SCORE: <strong id="snake-score">0</strong> <span id="snake-turn-label"></span></div><div class="snake-controls"><button type="button" data-direction="up">↑</button><div><button type="button" data-direction="left">←</button><button type="button" data-direction="down">↓</button><button type="button" data-direction="right">→</button></div></div><div class="game-result" id="game-result">Press Start Game to begin</div></div>
+  {% elif game.slug == '2048' %}
+  <div class="game-content"><div class="game-instruction">Slide tiles and combine matching numbers to reach the target.</div><div class="tile-stats">TARGET <strong id="tile-target">512</strong><span>SCORE <strong id="tile-score">0</strong></span></div><div class="tile-board" id="tile-board"></div><div class="game-result" id="game-result">Press Start Game to begin</div></div>
+  {% elif game.slug == 'rock-paper-scissors' %}
+  <div class="game-content"><div class="game-instruction">Choose your move. First to the target wins.</div><div class="rps-score"><div><small id="rps-name-player">YOU</small><strong id="rps-player">0</strong></div><span>VS</span><div><small id="rps-name-cpu">AI</small><strong id="rps-cpu">0</strong></div></div><div class="rps-choices"><button type="button" data-choice="rock">✊<small>ROCK</small></button><button type="button" data-choice="paper">✋<small>PAPER</small></button><button type="button" data-choice="scissors">✌️<small>SCISSORS</small></button></div><div class="game-result" id="game-result">Press Start Game to begin</div></div>
+  {% elif game.slug == 'memory-match' %}
+  <div class="game-content"><div class="game-instruction">Match pairs. Each matched pair earns one point.</div><div class="memory-stats"><span id="memory-turn">YOUR TURN</span><span>Moves: <strong id="memory-moves">0</strong></span><span>Pairs: <strong id="memory-matched">0/4</strong></span></div><div class="duel-score compact"><div><small id="memory-name-one">YOU</small><strong id="memory-score-one">0</strong></div><span>VS</span><div><small id="memory-name-two">AI</small><strong id="memory-score-two">0</strong></div></div><div class="memory-board" id="memory-board"></div><div class="game-result" id="game-result">Press Start Game to begin</div></div>
+  {% elif game.slug == 'number-guessing' %}
+  <div class="game-content"><div class="game-instruction">Find the hidden number. Players take turns guessing.</div><div class="number-orb">?</div><div class="number-turn" id="number-turn">YOUR TURN</div><form id="guess-form" class="guess-form"><input id="guess-input" type="number" min="1" max="30" placeholder="Your guess" required><button class="button button-glow" type="submit">Guess it →</button></form><div class="game-result" id="game-result">Press Start Game to begin</div><div class="attempts" id="guess-attempts">Guesses remaining: 10</div></div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}<script>window.PLAYLINE_GAME = {{ game.slug|tojson }};</script>{% endblock %}

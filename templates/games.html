@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Explore games{% endblock %}
+{% block crumb %}GAME LIBRARY{% endblock %}
+{% block content %}
+<section class="page-heading"><div><div class="eyebrow">FIND YOUR NEXT OBSESSION</div><h1>Explore games<span class="tiny-spark"> ✦</span></h1><p class="muted">Six ways to play. Which one is calling?</p></div></section>
+<form class="filter-bar" method="get"><div class="search-box"><span>⌕</span><input name="q" value="{{ query }}" placeholder="Search games..."></div><select name="category" onchange="this.form.submit()">{% for cat in ['All','Strategy','Arcade','Puzzle','Casual','Brain'] %}<option value="{{ cat }}" {{ 'selected' if selected_category == cat else '' }}>{{ cat }}</option>{% endfor %}</select><button class="button button-small button-outline" type="submit">Search</button></form>
+<div class="game-grid library-grid">{% for game in game_list %}<article class="game-card {{ game.color }}"><a class="game-art art-{{ game.slug }}" href="{{ url_for('play', slug=game.slug) }}"><span class="art-glow"></span><span class="game-symbol">{{ game.icon }}</span><span class="art-label">{{ game.category|upper }} / {{ game.difficulty|upper }}</span><span class="play-circle">▶</span></a><div class="game-info"><div><h3>{{ game.name }}</h3><p>{{ game.description }}</p></div><button class="fav-button" data-favorite="{{ game.slug }}" aria-label="Toggle favorite">{{ '♥' if game.slug in favorites else '♡' }}</button></div><a class="play-text" href="{{ url_for('play', slug=game.slug) }}">Play game <span>↗</span></a></article>{% else %}<div class="empty-state wide"><span>⌕</span><p>No games match your search.</p><a href="{{ url_for('game_library') }}">Clear filters →</a></div>{% endfor %}</div>
+{% endblock %}
